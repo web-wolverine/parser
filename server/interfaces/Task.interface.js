@@ -16,4 +16,4 @@ class ITask {
     }
 }
 
-module.exports = IQueue;
+module.exports = ITask;
