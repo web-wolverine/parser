@@ -2,11 +2,11 @@ const DefaultParcer = require('./DefaultParser');
 
 
 class ParcerManager {
-    constructor({ strategyKey, parcerOptions }) {
-        this.setStrategy(strategyKey, parcerOptions)
+    constructor({ strategyKey, parcerOptions, taskEvents }) {
+        this.setStrategy(strategyKey, parcerOptions, taskEvents)
     };
 
-    setStrategy(strategyKey, options) {
+    setStrategy(strategyKey, options, taskEvents) {
         let Strategy;
 
         switch (strategyKey) {
@@ -19,7 +19,9 @@ class ParcerManager {
             }
         }
 
-        this.ParcerStrategy = new Strategy(options);
+        this.ParcerStrategy = new Strategy(options, {
+            taskEvents
+        });
     }
 
     async start() {

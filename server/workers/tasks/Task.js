@@ -1,6 +1,8 @@
 // const ITask = require('../interfaces/Task.interface');
 const uuidGenerator = require('uuid/v4');
-const ParcerManager = require('../parsers/ParserManager')
+const ParcerManager = require('../parsers/ParserManager');
+const EventEmitter = require('events');
+
 
 class Task {
     constructor({
@@ -8,16 +10,28 @@ class Task {
         handlerOptions
     }) {
 
+        this.Handler = null;
         this.handlerKey = handlerKey
         this.handlerOptions = handlerOptions
-        this.Handler = null;
+        this.taskEvents = new EventEmitter();
 
+        this.initEvents();
     }
+
 
     taskKey = uuidGenerator();
     status = 'stopped'
     fulfilled = 0
     result = []
+
+
+    initEvents() {
+        this.taskEvents.on('onResult', this.onResult)
+    }
+
+    onResult(results) {
+        console.log('result', results);
+    }
 
     setStatus(status) {
         this.status = status;
@@ -34,7 +48,8 @@ class Task {
     initHandler() {
         this.Handler = new ParcerManager({
             strategyKey: this.handlerKey,
-            parcerOptions: this.handlerOptions
+            parcerOptions: this.handlerOptions,
+            taskEvents: this.taskEvents
         })
     }
 

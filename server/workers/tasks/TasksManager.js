@@ -2,9 +2,9 @@
 const TaskClass = require('./Task')
 
 class TasksManager {
-    constructor(TasksStorage) {
+    constructor(TasksStorage, SaveManager) {
         this.TasksStorage = TasksStorage;
-
+        this.SaveManager = SaveManager;
 
     }
 
@@ -26,6 +26,11 @@ class TasksManager {
     async getLatestTask() {
         return await this.TasksStorage.getLatestTask();
     }
+
+    saveTaskResult(result) {
+        this.SaveManager.save(result);
+    }
+
 }
 
 module.exports = TasksManager;

@@ -7,6 +7,8 @@ class DefaultParcer {
         maxPages = 0,
         keys = {},
         searchObjectsKey = '',
+    }, {
+        taskEvents
     }) {
 
         this.url = url;
@@ -24,6 +26,8 @@ class DefaultParcer {
         this.results = [];
 
         this.key = 'default_parser';
+
+        this.taskEvents = taskEvents;
     };
 
     get key() { return this.key };
@@ -104,9 +108,8 @@ class DefaultParcer {
         this.queues = this.getQueues();
 
         await this.startParsing(this.queues);
-        console.log(' this.results', this.results);
-        return this.results;
 
+        this.taskEvents.emit('onResult', this.results);
     }
 
     async startParsing(timeout = 1000) {
